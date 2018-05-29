@@ -310,3 +310,51 @@ header.masthead p {
 .btn-primary:active, .btn-primary:focus {
   box-shadow: 0 0 0 0.2rem rgba(240, 95, 64, 0.5) !important;
 }
+
+header.hockeyhead {
+  padding-top: 10rem;
+  padding-bottom: calc(10rem - 56px);
+  background-image: url("../img/Montreal ODR.jpg");
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+header.hockeyhead hr {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+header.hockeyhead h1 {
+  font-size: 2rem;
+}
+
+header.hockeyhead p {
+  font-weight: 300;
+}
+
+@media (min-width: 768px) {
+  header.hockeyhead p {
+    font-size: 1.15rem;
+  }
+}
+
+@media (min-width: 992px) {
+  header.hockeyhead {
+    height: 100vh;
+    min-height: 650px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  header.hockeyhead h1 {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  header.hockeyhead h1 {
+    font-size: 4rem;
+  }
+}

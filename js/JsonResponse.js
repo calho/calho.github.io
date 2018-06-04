@@ -1,0 +1,1 @@
+class JsonResponse{constructor(){this.Response=""}get response(){return this.Response}setResponse(s){this.Response=s}}

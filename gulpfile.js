@@ -3,9 +3,13 @@ var sass = require('gulp-sass');
 var header = require('gulp-header');
 var cleanCSS = require('gulp-clean-css');
 var rename = require("gulp-rename");
-var uglify = require('gulp-uglify');
+var uglify = require('gulp-uglify-es').default;
 var pkg = require('./package.json');
 var browserSync = require('browser-sync').create();
+var concat = require("gulp-concat");
+var livereload = require("gulp-livereload");
+const $ = require("gulp-load-plugins")();
+
 
 // Set the banner content
 var banner = ['/*!\n',
@@ -124,4 +128,32 @@ gulp.task('dev', ['css', 'js', 'browserSync'], function() {
   gulp.watch('./scss/*.scss', ['css']);
   gulp.watch('./js/*.js', ['js']);
   gulp.watch('./*.html', browserSync.reload);
+});
+
+var gutil = require('gulp-util');
+
+$.uglify().on('error', function(err) {
+    gutil.log(gutil.colors.red('[Error]'), err.toString());
+    console.log('*********************************************');
+    this.emit('end');
+})
+
+
+gulp.task('scripts', function() {
+    return gulp.src(['dev_assets/scripts/*.js'])
+        .pipe(concat('all.min.js'))
+        .pipe(uglify())
+        .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
+        .pipe(gulp.dest('public/js'))
+        .pipe(livereload());
+});
+
+var pump = require('pump');
+
+gulp.task('uglify-error-debugging', function (cb) {
+    pump([
+        gulp.src('./js/*.js'),
+        uglify(),
+        gulp.dest('./js')
+    ], cb);
 });

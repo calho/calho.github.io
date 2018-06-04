@@ -24,6 +24,8 @@
     <!--<link href="https://calho.github.io/css/creative.min.css" rel="stylesheet">-->
     <link href="../css/creative.min.css" rel="stylesheet">
 
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
   </head>
   <body>
 
@@ -52,8 +54,8 @@
           <div class="col-lg-8 mx-auto text-center">
             <h2 class="section-heading text-white">About</h2>
             <hr class="light my-4">
-            <p class="text-faded mb-4">This project was made to graph out the trend of a player's points throughout their career.</p>
-            <!--<a class="btn btn-light btn-xl js-scroll-trigger" href="#services">Get Started!</a>-->
+            <p class="text-faded mb-4">This project was made to graph out the trend of all current hockey player's points throughout their career.</p>
+            <a class="btn btn-light btn-xl js-scroll-trigger" href="#selectors">Get Started!</a>
           </div>
         </div>
       </div>
@@ -65,30 +67,37 @@
           <div class="col-lg-12 text-center">
             <h2 class="section-heading">How to Use</h2>
             <hr class="my-4">
-            <p class="mb-4">Just select one of the abbreviated teams from the dropdown menu, and then select a player you would like to view.</p>
+            <p class="mb-4">Just select one of the teams from the dropdown menu, and then select a player you would like to view.</p>
           </div>
         </div>
       </div>
     </section>
 
     <section id="selectors">
-      <div class="input-group mx-auto">
+      <div class="input-group my-auto">
         <div class="input-group-prepend">
-          <label class="input-group-text" for="selectedTeam">Team</label>
+          <label class="input-group-text" for="teamSelector">Team</label>
         </div>
-        <select class="custom-select" id="selectedTeam">
-          {% for colour in colours %}
-          <option value = "{{colour}}" SELECTED>{{colour}}</option>
-          {% endfor %}
-        </select>
+        <select class="custom-select" id="teamSelector" onchange="fillPlayerSelector();createGraph()"></select>
       </div>
+
+      <div class="input-group mt-5">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="playerSelector">Player</label>
+        </div>
+        <select class="custom-select" id="playerSelector" onchange="createGraph()"></select>
+      </div>
+
+      <div id="graph"></div>
+
     </section>
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" href="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../js/HockeyAPI.js"></script>
+    <script src="../js/JsonResponse.js"></script>
+    <script src="../js/hockeyData.js"></script>
 
-    <p id="result"></p>
-
-    <?php include 'test.php';?>
+    <script>initiatePage();</script>
 
     <!-- Bootstrap core JavaScript -->
     <script src="../vendor/jquery/jquery.min.js"></script>

@@ -130,23 +130,23 @@ gulp.task('dev', ['css', 'js', 'browserSync'], function() {
   gulp.watch('./*.html', browserSync.reload);
 });
 
-var gutil = require('gulp-util');
+// var gutil = require('gulp-util');
+//
+// $.uglify().on('error', function(err) {
+//     gutil.log(gutil.colors.red('[Error]'), err.toString());
+//     console.log('*********************************************');
+//     this.emit('end');
+// })
 
-$.uglify().on('error', function(err) {
-    gutil.log(gutil.colors.red('[Error]'), err.toString());
-    console.log('*********************************************');
-    this.emit('end');
-})
 
-
-gulp.task('scripts', function() {
-    return gulp.src(['dev_assets/scripts/*.js'])
-        .pipe(concat('all.min.js'))
-        .pipe(uglify())
-        .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
-        .pipe(gulp.dest('public/js'))
-        .pipe(livereload());
-});
+// gulp.task('scripts', function() {
+//     return gulp.src(['dev_assets/scripts/*.js'])
+//         .pipe(concat('all.min.js'))
+//         .pipe(uglify())
+//         .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
+//         .pipe(gulp.dest('public/js'))
+//         .pipe(livereload());
+// });
 
 var pump = require('pump');
 

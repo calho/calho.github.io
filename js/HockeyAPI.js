@@ -60,6 +60,17 @@ HockeyAPI.prototype.getPlayerStats = function(playerId, jsonResponse) {
         this._Request.send();
     };
 
+/**
+ * @property {object} people
+ * */
+HockeyAPI.prototype.getPlayerInformation = function(playerId, jsonResponse) {
+    this._Request.onload = function () {
+        jsonResponse.setResponse(JSON.parse(this.responseText).people[0]);
+    };
+    this._Request.open('get', this._URL+'people/'+playerId, false);
+    this._Request.send();
+};
+
 HockeyAPI.compareNames = function(a, b) {
         if (a.name < b.name)
             return -1;

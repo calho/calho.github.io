@@ -23,23 +23,42 @@ function createGraph() {
     let jsonResponse = new JsonResponse();
 
     let season_year = [];
-    let season_points = [];
+    let season_stats = [];
+    let yaxis = "";
 
     let selectedPlayer = playerSelector.options[playerSelector.selectedIndex];
 
     hockeyApi.getPlayerStats(selectedPlayer.value, jsonResponse);
     let response = jsonResponse.response.splits;
-    response.forEach(function (season) {
-        if ((season.league.hasOwnProperty('id')) && (season.league.id === hockeyApi.getNHLId())){
-            season_points.push(season.stat.points);
-            let year = season.season;
-            season_year.push(year.substring(0,4)+'-'+year.substring(4));
-        }
-    });
+    
+    hockeyApi.getPlayerInformation(selectedPlayer.value, jsonResponse);
+    let playerInfoResponse = jsonResponse.response;
+    
+    if (playerInfoResponse.primaryPosition.code.localeCompare("G") === 0) {
+        response.forEach(function (season) {
+            if ((season.league.hasOwnProperty('id')) && (season.league.id === hockeyApi.getNHLId())){
+                season_stats.push(season.stat.savePercentage);
+                let year = season.season;
+                season_year.push(year.substring(0,4)+'-'+year.substring(4));
+            }
+        });
+        yaxis = "Save Percentage";
+    }
+    else {
+        response.forEach(function (season) {
+            if ((season.league.hasOwnProperty('id')) && (season.league.id === hockeyApi.getNHLId())){
+                season_stats.push(season.stat.points/season.stat.games);
+                let year = season.season;
+                season_year.push(year.substring(0,4)+'-'+year.substring(4));
+            }
+        });
+        yaxis = "Points Per Game";
+    }
+
 
     let trace = {
         x: season_year,
-        y: season_points,
+        y: season_stats,
         name: selectedPlayer.text,
         type: 'scatter'
     };
@@ -80,7 +99,7 @@ function createGraph() {
             }
         },
         yaxis: {
-            title: 'Points',
+            title: yaxis,
             titlefont: {
                 family: 'Courier New, monospace',
                 size: 18,

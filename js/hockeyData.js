@@ -46,7 +46,7 @@ function createGraph() {
     }
     else {
         response.forEach(function (season) {
-            if ((season.league.hasOwnProperty('id')) && (season.league.id === hockeyApi.getNHLId())){
+            if ((season.league.hasOwnProperty('id')) && (season.league.id === hockeyApi.getNHLId()) && season.stat.games > 0){
                 season_stats.push(season.stat.points/season.stat.games);
                 let year = season.season;
                 season_year.push(year.substring(0,4)+'-'+year.substring(4));

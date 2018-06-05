@@ -48,8 +48,6 @@
     "gulp-uglify-es": "^1.0.4",
     "pump": "^3.0.0"
   },
-  "main": "gulpfile.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  "main": "gulpfile.js"
+
 }

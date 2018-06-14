@@ -24,6 +24,7 @@ function createGraph() {
 
     let season_year = [];
     let season_stats = [];
+    let season_points = [];
     let yaxis = "";
 
     let selectedPlayer = playerSelector.options[playerSelector.selectedIndex];
@@ -50,6 +51,7 @@ function createGraph() {
                 season_stats.push(season.stat.points/season.stat.games);
                 let year = season.season;
                 season_year.push(year.substring(0,4)+'-'+year.substring(4));
+                season_points.push(season.stat.points + " points in " + season.stat.games + " games");
             }
         });
         yaxis = "Points Per Game";
@@ -59,6 +61,7 @@ function createGraph() {
     let trace = {
         x: season_year,
         y: season_stats,
+        text: season_points,
         name: selectedPlayer.text,
         type: 'scatter'
     };

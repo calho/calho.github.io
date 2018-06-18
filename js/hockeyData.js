@@ -3,6 +3,7 @@ let hockeyApi = new HockeyAPI();
 function initiatePage() {
     fillTeamSelector();
     fillPlayerSelector(true);
+    fillStatSelector();
     createGraph();
 }
 
@@ -15,6 +16,47 @@ function fillPlayerSelector(set_default = false ) {
     let teamSelector = document.getElementById('teamSelector');
     document.getElementById('playerSelector').options.length = 0;
     hockeyApi.getRoster(teamSelector.options[teamSelector.selectedIndex].value, set_default);
+}
+
+function fillStatSelector() {
+    let playerSelector = document.getElementById('playerSelector');
+
+    let selectedPlayer = playerSelector.options[playerSelector.selectedIndex];
+
+    let jsonResponse = new JsonResponse();
+
+    hockeyApi.getPlayerStats(selectedPlayer.value, jsonResponse);
+    let response = jsonResponse.response.splits;
+
+    let season = findNHLLeague(response);
+
+    let statSelector = document.getElementById('statSelector');
+    statSelector.options.length = 0;
+
+    for (let category in season.stat) {
+        let option = document.createElement('option');
+        option.value = category;
+        //https://stackoverflow.com/questions/5582228/insert-space-before-capital-letters
+        option.textContent = category.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([A-Z])([A-Z])/g, '$1 $2').trim();
+        if (category === "points") {
+            option.selected = true;
+        }
+
+        if (category === "savePercentage") {
+            option.selected = true;
+        }
+
+        statSelector.appendChild(option);
+    }
+
+}
+
+function checkNHLLeague(season) {
+    return ((season.league.hasOwnProperty('id')) && (season.league.id === hockeyApi.getNHLId()));
+}
+
+function findNHLLeague(stat) {
+    return stat.find(checkNHLLeague);
 }
 
 function createGraph() {
@@ -34,6 +76,10 @@ function createGraph() {
     
     hockeyApi.getPlayerInformation(selectedPlayer.value, jsonResponse);
     let playerInfoResponse = jsonResponse.response;
+
+    let statSelector =  document.getElementById('statSelector');
+    let statCategory = statSelector.options[statSelector.selectedIndex].value;
+    let statText = statSelector.options[statSelector.selectedIndex].text;
     
     if (playerInfoResponse.primaryPosition.code.localeCompare("G") === 0) {
         response.forEach(function (season) {
@@ -43,18 +89,18 @@ function createGraph() {
                 season_year.push(year.substring(0,4)+'-'+year.substring(4));
             }
         });
-        yaxis = "Save Percentage";
+        yaxis = statText;
     }
     else {
         response.forEach(function (season) {
             if ((season.league.hasOwnProperty('id')) && (season.league.id === hockeyApi.getNHLId()) && season.stat.games > 0){
-                season_stats.push(season.stat.points/season.stat.games);
+                season_stats.push(season.stat[statCategory]/season.stat.games);
                 let year = season.season;
                 season_year.push(year.substring(0,4)+'-'+year.substring(4));
-                season_points.push(season.stat.points + " points in " + season.stat.games + " games");
+                season_points.push(season.stat[statCategory] + " " + statText + " in " + season.stat.games + " games");
             }
         });
-        yaxis = "Points Per Game";
+        yaxis = statText + " Per Game";
     }
 
 

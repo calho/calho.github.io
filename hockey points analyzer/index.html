@@ -82,14 +82,21 @@
         <div class="input-group-prepend">
           <label class="input-group-text" for="teamSelector">Team</label>
         </div>
-        <select class="custom-select" id="teamSelector" onchange="fillPlayerSelector();createGraph()"></select>
+        <select class="custom-select" id="teamSelector" onchange="fillPlayerSelector();fillStatSelector();createGraph()"></select>
       </div>
 
       <div class="input-group mt-5">
         <div class="input-group-prepend">
           <label class="input-group-text" for="playerSelector">Player</label>
         </div>
-        <select class="custom-select" id="playerSelector" onchange="createGraph()"></select>
+        <select class="custom-select" id="playerSelector" onchange="fillStatSelector();createGraph()"></select>
+      </div>
+
+      <div class="input-group mt-5">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="statSelector">Stat</label>
+        </div>
+        <select class="custom-select" id="statSelector" onchange="createGraph()"></select>
       </div>
 
       <div id="graph"></div>

@@ -5,7 +5,7 @@ function HockeyAPI() {
 }
 
 /** @property {object} teams*/
-HockeyAPI.prototype.getTeams = function() {
+HockeyAPI.prototype.getTeams = function(set_default) {
         this._Request.onload = function () {
             let teams = JSON.parse(this.responseText).teams;
             let teamSelector = document.getElementById('teamSelector');
@@ -14,8 +14,10 @@ HockeyAPI.prototype.getTeams = function() {
                 let option = document.createElement('option');
                 option.value = team.id;
                 option.textContent = team.name;
-                // default team selected is the Penguins
-                if (team.id === 5) {
+                // default team selected set to:
+                // penguins === 5
+                // capitals === 15
+                if (set_default && (team.id === 15)) {
                     option.selected = true;
                 }
                 teamSelector.appendChild(option);
@@ -30,26 +32,27 @@ HockeyAPI.prototype.getTeams = function() {
  *  @property {object} person
  *  @property {string} fullName
  * */
-HockeyAPI.prototype.getRoster = function(teamId,set_default) {
+HockeyAPI.prototype.getRoster = function(teamId, position, set_default) {
         this._Request.onload = function () {
             let roster = JSON.parse(this.responseText).roster;
             let playerSelector = document.getElementById('playerSelector');
+            let positionCode = (position.localeCompare("2")===0) ? "G" : "S";
             roster.sort(HockeyAPI.comparefullNames);
             roster.forEach(function (player) {
-                // console.log(player.fullName);
-                let option = document.createElement('option');
-                option.value = player.person.id;
-                option.textContent = player.person.fullName;
-                // default player selected is Crosby
-                if (set_default && (player.person.id === 8471675)) {
-                    option.selected = true;
+                if ((positionCode.localeCompare("G")===0) && (player.position.code.localeCompare("G")===0) ) {
+                    HockeyAPI.createPlayerOption(player, set_default, playerSelector);
                 }
-                playerSelector.appendChild(option);
+                else if ((positionCode.localeCompare("S")===0) && (player.position.code.localeCompare("G")!==0) ) {
+                    HockeyAPI.createPlayerOption(player, set_default, playerSelector);
+                }
+
             });
         };
         this._Request.open('get', this._URL+'/teams/'+teamId+'/roster', false);
         this._Request.send();
     };
+
+
 
     // https://stackoverflow.com/questions/5362462/how-can-i-make-xhr-onreadystatechange-return-its-result
 HockeyAPI.prototype.getPlayerStats = function(playerId, jsonResponse) {
@@ -69,6 +72,20 @@ HockeyAPI.prototype.getPlayerInformation = function(playerId, jsonResponse) {
     };
     this._Request.open('get', this._URL+'people/'+playerId, false);
     this._Request.send();
+};
+
+HockeyAPI.createPlayerOption = function(player, set_default, playerSelector) {
+    // console.log(player.fullName);
+    let option = document.createElement('option');
+    option.value = player.person.id;
+    option.textContent = player.person.fullName;
+    // default player selection set to:
+    // crosby === 8471675
+    // ovi === 8471214
+    if (set_default && (player.person.id === 8471214)) {
+        option.selected = true;
+    }
+    playerSelector.appendChild(option);
 };
 
 HockeyAPI.compareNames = function(a, b) {

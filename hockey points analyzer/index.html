@@ -58,7 +58,7 @@
           <div class="col-lg-8 mx-auto text-center">
             <h2 class="section-heading text-white">About</h2>
             <hr class="light my-4">
-            <p class="text-faded mb-4">This project was made to graph out the trend of all current hockey player's points throughout their career.</p>
+            <p class="text-faded mb-4">This project was made to graph out and compare the trend of all current hockey player's stats throughout their career.</p>
             <a class="btn btn-light btn-xl js-scroll-trigger" href="#selectors">Get Started!</a>
           </div>
         </div>
@@ -71,33 +71,54 @@
           <div class="col-lg-12 text-center">
             <h2 class="section-heading">How to Use</h2>
             <hr class="my-4">
-            <p class="mb-4">Just select one of the teams from the dropdown menu, and then select a player you would like to view.</p>
+            <p class="mb-2">Just select a player position and a stat category, then one of the teams from the dropdown menu, and then select a player you would like to view.
+              Skater stats are calculated on a per game basis while goalie stats are on a per season basis</p>
+            <p class="mb-2">To compare multiple players, select a player, then click on the add button to save that player, then select/add other players to compare their various stats. </p>
+            <p class="mb-2">Changing the player position will clear any currently saved players as you can only compare players of the same position.</p>
           </div>
         </div>
       </div>
     </section>
 
     <section id="selectors">
+
       <div class="input-group my-auto">
+
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="positionSelector">Team</label>
+        </div>
+        <select class="custom-select mr-1" id="positionSelector" onchange="clearCurrentPosition(); fillStatSelector()">
+          <option value="1">Skater</option>
+          <option value="2">Goalie</option>
+        </select>
+
+        <div class="input-group-prepend">
+          <label class="input-group-text ml-1" for="statSelector">Stat</label>
+        </div>
+        <select class="custom-select" id="statSelector" onchange="getNewStats()"></select>
+
+      </div>
+
+      <div class="input-group mt-5">
         <div class="input-group-prepend">
           <label class="input-group-text" for="teamSelector">Team</label>
         </div>
-        <select class="custom-select" id="teamSelector" onchange="fillPlayerSelector();fillStatSelector();createGraph()"></select>
+        <select class="custom-select" id="teamSelector" onchange="fillPlayerSelector()"></select>
       </div>
 
       <div class="input-group mt-5">
         <div class="input-group-prepend">
           <label class="input-group-text" for="playerSelector">Player</label>
         </div>
-        <select class="custom-select" id="playerSelector" onchange="fillStatSelector();createGraph()"></select>
+        <select class="custom-select" id="playerSelector" onchange="createGraph()"></select>
       </div>
 
-      <div class="input-group mt-5">
-        <div class="input-group-prepend">
-          <label class="input-group-text" for="statSelector">Stat</label>
-        </div>
-        <select class="custom-select" id="statSelector" onchange="createGraph()"></select>
-      </div>
+      <!--position > player > stat > graph-->
+      <!--team > player > graph-->
+
+      <button type="button" class="btn-primary mt-3" onclick="addToCompare();">Add</button>
+
+      <div id="compares"></div>
 
       <div id="graph"></div>
 

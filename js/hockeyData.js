@@ -252,6 +252,7 @@ function createGraph() {
 /**
  * @property {string} season
  * @property {number} games
+ * @property {object} team
  * */
 function createStatsData(selectedPlayerId, jsonResponse, positionCode, statText, statCategory ) {
 
@@ -275,6 +276,7 @@ function createStatsData(selectedPlayerId, jsonResponse, positionCode, statText,
                 if (typeof stat === 'string') {
                     yFlag = true;
                 }
+                stat_description.push(season.team.name);
             }
         });
         yaxis = statText;
@@ -302,7 +304,7 @@ function createStatsData(selectedPlayerId, jsonResponse, positionCode, statText,
                 }
                 let year = season.season;
                 season_year.push(year.substring(0,4)+'-'+year.substring(4));
-                stat_description.push(season.stat[statCategory] + " " + statText + " in " + season.stat.games + " games");
+                stat_description.push(season.stat[statCategory] + " " + statText + " in " + season.stat.games + " games </br>" + season.team.name);
             }
         });
         yaxis = statText + " Per Game";

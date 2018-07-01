@@ -358,3 +358,51 @@ header.hockeyhead p {
     font-size: 4rem;
   }
 }
+
+header.fourOfour {
+  padding-top: 10rem;
+  padding-bottom: calc(10rem - 56px);
+  background-image: url("../img/404.png");
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+header.fourOfour hr {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+header.fourOfour h1 {
+  font-size: 2rem;
+}
+
+header.fourOfour p {
+  font-weight: 300;
+}
+
+@media (min-width: 768px) {
+  header.fourOfour p {
+    font-size: 1.15rem;
+  }
+}
+
+@media (min-width: 992px) {
+  header.fourOfour {
+    height: 100vh;
+    min-height: 650px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  header.fourOfour h1 {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  header.fourOfour h1 {
+    font-size: 4rem;
+  }
+}
